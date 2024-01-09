@@ -1,5 +1,5 @@
+using System.Linq.Expressions;
 using CashFlow.Data.Context;
-using CashFlow.Domain.Aggregates.Repositories;
 using CashFlow.Domain.BaseDefinitions;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +19,12 @@ public class Repository<T>  where T : Entity
     {
         return await _dbSet.ToListAsync();
     }
+    
+    public async Task<IEnumerable<T>> GetAllByExpressionAsync(Expression<Func<T, bool>> predicate)
+    {
+        var query = _dbSet.AsQueryable();
+        return await query.Where(predicate).ToListAsync();
+    }
 
     public async Task<T?> GetByIdAsync(int id)
     {
@@ -37,6 +43,11 @@ public class Repository<T>  where T : Entity
         var etty = _dbSet.FirstOrDefault(t => t.Id == entity.Id);
         if(etty! != null!)
             _context.Entry(etty).CurrentValues.SetValues(entity);
+    }
+    
+    public void Delete(T entity)
+    {
+        _dbSet.Remove(entity);
     }
 
     public async Task SaveAsync()

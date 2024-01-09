@@ -13,13 +13,17 @@ public class BillToPay : Entity
     {
         Value = value;
         ExpirationDate = expirationDate;
-        Supplier = supplier;
+        if (supplier.Id == 0)
+            Supplier = supplier;
+        else
+            SupplierId = supplier.Id;
     }
 
     public Decimal Value { get; set; }
     public DateOnly ExpirationDate { get; set; }
     public DateOnly? PaymentDate { get; set; }
     public Supplier Supplier { get; set; }
+    public int SupplierId { get; set; } 
     public bool IsExpired() => ExpirationDate > DateOnly.FromDateTime(DateTime.Today);
 
     public void WriteOff()

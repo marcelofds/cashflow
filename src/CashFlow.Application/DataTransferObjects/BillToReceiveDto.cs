@@ -6,7 +6,7 @@ public class BillToReceiveDto
 {
     public int Id { get; set; }
     public Decimal Value { get; set; }
-    public DateTime ExpirationDate { get; set; }
-    public DateTime PaymentDate { get; set; }
-    public Customer CustomerDto { get; set; }
+    public DateOnly ExpirationDate { get; set; }
+    public DateOnly PaymentDate { get; set; }
+    public CustomerDto Customer { get; set; }
 }

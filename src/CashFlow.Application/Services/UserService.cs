@@ -1,3 +1,4 @@
+using CashFlow.Application.DataTransferObjects;
 using CashFlow.Domain.Aggregates;
 using CashFlow.Domain.Aggregates.Repositories;
 using CashFlow.Domain.Exceptions;
@@ -13,7 +14,7 @@ public class UserService : IUserService
         _repository = repository;
     }
 
-    public User Get(User user)
+    public User Get(UserDto user)
     {
         var logedUser = _repository.Get(user.UserName, user.Password);
         if (logedUser == null)
@@ -27,5 +28,5 @@ public class UserService : IUserService
 
 public interface IUserService
 {
-    User Get(User user);
+    User Get(UserDto user);
 }

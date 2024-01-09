@@ -7,19 +7,23 @@ public class BillToReceive : Entity
 {
     public BillToReceive()
     {
-        
     }
     public BillToReceive(decimal value, DateOnly expirationDate, Customer customer)
     {
         Value = value;
         ExpirationDate = expirationDate;
-        Customer = customer;
+        if(customer.Id == 0)
+            Customer = customer;
+        else
+            CustomerId = customer.Id;
     }
 
     public Decimal Value { get; set; }
     public DateOnly ExpirationDate { get; set; }
     public DateOnly? PaymentDate { get; set; }
     public Customer Customer { get; set; }
+    
+    public int CustomerId { get; set; }
 
     public bool IsExpired() => ExpirationDate > DateOnly.FromDateTime(DateTime.Today);
 
