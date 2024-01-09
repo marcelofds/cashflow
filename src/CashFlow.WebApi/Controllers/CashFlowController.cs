@@ -1,11 +1,13 @@
 using CashFlow.Application.Services;
 using CashFlow.Domain.Aggregates;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CashFlow.Api.Controllers;
+namespace WebApplication1.Controllers;
 
 [Produces("application/json")]
 [Route("api/cashflows")]
+[Authorize]
 public class CashFlowController : ControllerBase
 {
     private readonly ICashFlowService _service;

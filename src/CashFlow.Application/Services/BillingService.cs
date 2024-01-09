@@ -6,8 +6,8 @@ using Mapster;
 namespace CashFlow.Application.Services;
 public interface IBillingService
 {
-    Task<BillToPay?> GetBillingToPayById(int id);
-    Task<BillToReceive?> GetBillingToReceiveById(int id);
+    Task<BillToPayDto?> GetBillingToPayById(int id);
+    Task<BillToReceiveDto?> GetBillingToReceiveById(int id);
     Task IncludeNewBillToPay(BillToPayInsertDto bill);
     Task IncludeNewBillToReceive(BillToReceiveInsertDto bill);
 }
@@ -21,9 +21,10 @@ public class BillingService : IBillingService
         _toPayRepository = toPayRepository;
         _toReceiveRepository = toReceiveRepository;
     }
-    public async Task<BillToPay?> GetBillingToPayById(int id)
+    public async Task<BillToPayDto?> GetBillingToPayById(int id)
     {
-        return await _toPayRepository.GetByIdAsync(id);
+        return (await _toPayRepository.GetByIdAsync(id))
+            .Adapt<BillToPayDto>();
     }
 
     public async Task IncludeNewBillToPay(BillToPayInsertDto bill)
@@ -33,9 +34,10 @@ public class BillingService : IBillingService
         await _toPayRepository.SaveAsync();
     }
     
-    public async Task<BillToReceive?> GetBillingToReceiveById(int id)
+    public async Task<BillToReceiveDto?> GetBillingToReceiveById(int id)
     {
-        return await _toReceiveRepository.GetByIdAsync(id);
+        return (await _toReceiveRepository.GetByIdAsync(id))
+            .Adapt<BillToReceiveDto>();
     }
 
     public async Task IncludeNewBillToReceive(BillToReceiveInsertDto bill)

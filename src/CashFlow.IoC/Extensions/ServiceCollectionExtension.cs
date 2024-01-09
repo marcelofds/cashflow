@@ -1,12 +1,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Text;
 using CashFlow.Application.Services;
+using CashFlow.Application.Utils;
 using CashFlow.Data.Context;
 using CashFlow.Data.Repositories;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace CashFlow.IoC.Extensions;
 
@@ -20,6 +25,29 @@ public static class ServiceCollectionExtension
         ConfigureTools(configuration);
         RegisterApplicationServices(configuration);
         RegisterRepositories(configuration);
+        ConfigureAuthentication(services);
+    }
+
+    private static void ConfigureAuthentication(IServiceCollection services)
+    {
+        var secretKey = Encoding.ASCII.GetBytes(Settings.Secret);
+        services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
     }
 
     private static void RegisterApplicationServices(IConfiguration configuration)
@@ -44,6 +72,40 @@ public static class ServiceCollectionExtension
     {
         _services.AddSingleton(TypeAdapterConfig.GlobalSettings);
         _services.AddScoped<IMapper, ServiceMapper>();
+    }
+
+    public static void AddSwaggerDocumentations(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIContagem", Version = "v1" });
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description =
+                    "JWT Authorization Header - utilizado com Bearer Authentication.\r\n\r\n" +
+                    "Digite 'Bearer' [espaço] e então seu token no campo abaixo.\r\n\r\n" +
+                    "Exemplo (informar sem as aspas): 'Bearer 12345abcdef'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
     }
 
     private static void ConfigureContext(IConfiguration configuration)
