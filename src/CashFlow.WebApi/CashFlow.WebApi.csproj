@@ -23,4 +23,8 @@
       <ProjectReference Include="..\CashFlow.IoC\CashFlow.IoC.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Assets\img" />
+    </ItemGroup>
+
 </Project>

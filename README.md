@@ -4,7 +4,8 @@
 
 # Aspectos gerais
 
-Na imagem CashFlow.png (está na raiz do projeto no repositório)
+Na imagem
+<img src="Assets/img/CashFlow.png">
 é definido o esquema arquitetural em nuvem para o deployment desse produto;
 
 Foi considerado para tanto o requisito não funcional ==> Alta disponibilidade: a principal definição que conduz essa arquitetura para ter alta disponibilidade está ligado à distribuição em pelo menos duas regiões de complemento de disponibilidade e também ter a replicação de dados de modo a manter bases de dados nas duas regiões respondendo às diversas instancias de Kubernets (pods) garantindo assim a independência entre os clusters nas regiões.
