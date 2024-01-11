@@ -2,7 +2,6 @@ using CashFlow.Application.DataTransferObjects;
 using CashFlow.Application.Services;
 using CashFlow.WebApi.Controllers;
 using Moq;
-using NUnit.Framework;
 
 namespace CashFlow.Tests.Controllers;
 
