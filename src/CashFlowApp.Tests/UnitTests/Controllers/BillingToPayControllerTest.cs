@@ -1,14 +1,11 @@
 using System.Linq.Expressions;
-using System.Text;
 using CashFlow.Application.DataTransferObjects;
 using CashFlow.Application.Services;
 using CashFlow.WebApi.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NUnit.Framework;
 
-namespace CashFlow.Tests.Controllers;
+namespace CashFlowApp.Tests.UnitTests.Controllers;
 
 [TestFixture]
 public class BillingToPayControllerTest

@@ -4,9 +4,8 @@ using CashFlow.Application.Services;
 using CashFlow.WebApi.Controllers;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NUnit.Framework;
 
-namespace CashFlow.Tests.Controllers;
+namespace CashFlowApp.Tests.UnitTests.Controllers;
 
 [TestFixture]
 public class BillingToReceiveControllerTest

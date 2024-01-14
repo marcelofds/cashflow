@@ -7,6 +7,7 @@
         <UserSecretsId>2ad81d30-22ca-4a89-94ab-c2c92c72fa4b</UserSecretsId>
         <AssemblyName>CashFlow.WebApi</AssemblyName>
         <RootNamespace>CashFlow.WebApi</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,6 +26,12 @@
 
     <ItemGroup>
       <Folder Include="Assets\img" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

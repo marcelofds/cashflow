@@ -3,7 +3,7 @@ using CashFlow.Application.Services;
 using CashFlow.WebApi.Controllers;
 using Moq;
 
-namespace CashFlow.Tests.Controllers;
+namespace CashFlowApp.Tests.UnitTests.Controllers;
 
 [TestFixture]
 public class CashFlowControllerTest

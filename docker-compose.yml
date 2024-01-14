@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    ports:
+      - 5433:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=S3cret
+      - POSTGRES_USER=citizix_user
+      - POSTGRES_DB=postgres
+  cashflow.webapi:
+    build: .
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStr: Host=db;Port=5432;Database=cashflow;User Id=citizix_user;Password=S3cret;
+    ports:
+      - "5136:80"
+    depends_on:
+      - db
+    networks:
+      - default
+  
