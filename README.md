@@ -18,35 +18,13 @@ No desenvolvimento da aplicação, tendo em vista isso ser parte de uma aplicaç
 
 Nessa secção estão comentadas alguma tomadas de decisão que foram feitas durante a implementação do projeto.
 
-## Base de dados e configurações
-
-O sistema de gerenciamento de dados utilizado nesse desenvolvimento foi o PostgreSql e integrado com o processo de Migrations do Entity Framework core, logo para colocar a aplicação em execução localmente é necessário ter uma servidor de dados do PostgreSql disponível para ser configurado no Secrets.Json da aplicação (é necessário configurar os secrets na maquina local - evitando o compartilhamento de dados sensívieis da base de dados). Segue aqui um exemplo do conteúdo do arquivo Secrets.Json:
-
-    {
-
-    "ConnectionStr": "User ID=<username>;Password=<passwd>;Host=<url>;Database=<database-name>;Integrated Security=true;Pooling=true"
-
-    }
-
-Para incluir o arquivo de secret para o projeto, execute o seguinte comando no diretório do mesmo:
-
-    dotnet user-secrets init
-
-Isso faz com o que o arquivo seja criado nas respectivas pastas, de acordo com o sitema operacional:
-
-- Windows --> %APPDATA%\Microsoft\UserSecrets\<user_secrets_id>\secrets.json
-
-- Mac/Linux --> ~/.microsoft/usersecrets/<user_secrets_id>/secrets.json
-
-Após tê-lo criado, navegue até a respectiva pasta e edite a mesma realizando a configuração da String de Conexao para o seu servidor de banco de dados.
-
 # Instruções de operação
 
 # Execução da aplicação
 
-Navegue até a pasta src/CashFlow.WebApi dentro do diretório raiz da solução e execute o seguinte comando na linha de comandos:
+Navegue até a pasta raiz da solução, onde estão os arquivos Dockerfile e docker-compose.yml e execute o comando na linha de comandos:
 
-    dotnet run CashFlow.WebApi
+    > docker compose up
 
 Em seguida abra um browser de sua preferencia (Foi completamente testado usando o Chrome e Safari) e acesse à seguinte url:
 
@@ -67,7 +45,8 @@ Ao executar a aplicação, o sistema irá criar automaticamente a base de dados 
 Após isso é possivel copiar o token gerado na resposta da requisição e fazer a autenticação do Swagger (clicar no botão Autorize) e seguir as instruções lá expostas.
 
 Consequentemente será possível cosumir os outros endpoints:
-
+- GET /api/billings-to-pay --> consultar todas as contas a pagar;
+- 
 - GET /api/billings-to-pay/{id} --> consultar uma certa conta a pagar pelo código;
 
 - PUT /api/billings-to-pay --> realizar a baixa do título
@@ -76,6 +55,8 @@ Consequentemente será possível cosumir os outros endpoints:
 
 - DELETE /api/billings-to-pay/{id} --> deleta um registro de conta a pagar identificada pelo id;
 
+- GET /api/billings-to-receive --> consultar todas as contas a receber;
+- 
 - GET /api/billings-to-receive/{id} --> consultar uma certa conta a receber pelo código;
 
 - PUT /api/billings-to-receive --> realizar a baixa do título

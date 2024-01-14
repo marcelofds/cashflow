@@ -11,21 +11,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Serilog.AspNetCore" Version="7.0.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CashFlow.IoC\CashFlow.IoC.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Assets\img"/>
+        <ProjectReference Include="..\CashFlow.IoC\CashFlow.IoC.csproj" />
     </ItemGroup>
 
     <ItemGroup>
