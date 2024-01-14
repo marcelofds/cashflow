@@ -7,8 +7,8 @@ public class BillToPay : Entity
 {
     public BillToPay()
     {
-        
     }
+
     public BillToPay(decimal value, DateOnly expirationDate, Supplier supplier)
     {
         Value = value;
@@ -19,20 +19,20 @@ public class BillToPay : Entity
             SupplierId = supplier.Id;
     }
 
-    public Decimal Value { get; set; }
+    public decimal Value { get; set; }
     public DateOnly ExpirationDate { get; set; }
     public DateOnly? PaymentDate { get; set; }
     public Supplier Supplier { get; set; }
-    public int SupplierId { get; set; } 
-    public bool IsExpired() => ExpirationDate > DateOnly.FromDateTime(DateTime.Today);
+    public int SupplierId { get; set; }
+
+    public bool IsExpired()
+    {
+        return ExpirationDate > DateOnly.FromDateTime(DateTime.Today);
+    }
 
     public void WriteOff()
     {
-        if (IsExpired())
-        {
-            throw new CashFlowInvalidOperationException("The system can't write off an expired title");
-        }
+        if (IsExpired()) throw new CashFlowInvalidOperationException("The system can't write off an expired title");
         PaymentDate = DateOnly.FromDateTime(DateTime.Today);
     }
-    
 }

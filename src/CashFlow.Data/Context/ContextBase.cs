@@ -1,25 +1,29 @@
-
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using CashFlow.Data.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace CashFlow.Data.Context;
+
 public interface IContextBase : IDisposable
 {
     int SaveChanges();
     Task SaveChangesAsync();
 }
+
 public abstract class ContextBase : DbContext, IContextBase
 {
     public ContextBase(DbContextOptions options) : base(options)
     {
-        
     }
-    
+
+    public virtual async Task SaveChangesAsync()
+    {
+        await base.SaveChangesAsync();
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        MethodInfo addMethod = typeof(ModelBuilderExtensions)
+        var addMethod = typeof(ModelBuilderExtensions)
             .GetMethods()
             .Single(m =>
                 m.Name == "AddConfiguration"
@@ -33,7 +37,8 @@ public abstract class ContextBase : DbContext, IContextBase
                 .GetTypes()
                 .Where(t => t.BaseType != null
                             && t.BaseType.IsGenericType
-                            && t.BaseType.GetGenericTypeDefinition() == typeof(ModelBuilderExtensions.EntityTypeConfiguration<>));
+                            && t.BaseType.GetGenericTypeDefinition() ==
+                            typeof(ModelBuilderExtensions.EntityTypeConfiguration<>));
 
             foreach (var type in configTypes)
             {
@@ -45,10 +50,4 @@ public abstract class ContextBase : DbContext, IContextBase
             }
         }
     }
-
-    public virtual async Task SaveChangesAsync()
-    {
-        await base.SaveChangesAsync();
-    }
-    
 }

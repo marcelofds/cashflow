@@ -9,16 +9,15 @@ namespace CashFlow.Application.Services;
 
 public class TokenService : ITokenService
 {
-    
     public string GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var secretKey = Encoding.ASCII.GetBytes(Settings.Secret);
-        var tokenDescriptor = new SecurityTokenDescriptor()
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
+            Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Role, user.Role)
             }),
             Expires = DateTime.UtcNow.AddHours(2),

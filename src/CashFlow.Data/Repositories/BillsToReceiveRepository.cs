@@ -4,10 +4,9 @@ using CashFlow.Domain.Aggregates.Repositories;
 
 namespace CashFlow.Data.Repositories;
 
-public class BillsToReceiveRepository :Repository<BillToReceive>, IBillsToReceiveRepository
+public class BillsToReceiveRepository : Repository<BillToReceive>, IBillsToReceiveRepository
 {
     public BillsToReceiveRepository(CashFlowContext context) : base(context)
     {
-      
     }
 }

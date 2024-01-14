@@ -5,6 +5,7 @@ using CashFlow.Domain.Exceptions;
 using Mapster;
 
 namespace CashFlow.Application.Services;
+
 public interface IBillingService
 {
     Task<BillToPayDto?> GetBillingToPayByIdAsync(int id);
@@ -18,6 +19,7 @@ public interface IBillingService
     Task<IEnumerable<BillToPayDto>> GetAllBillToPayAsync();
     Task<IEnumerable<BillToReceiveDto>> GetAllBillToReceiveAsync();
 }
+
 public class BillingService : IBillingService
 {
     private readonly IBillsToPayRepository _toPayRepository;
@@ -28,6 +30,7 @@ public class BillingService : IBillingService
         _toPayRepository = toPayRepository;
         _toReceiveRepository = toReceiveRepository;
     }
+
     public async Task<BillToPayDto?> GetBillingToPayByIdAsync(int id)
     {
         return (await _toPayRepository.GetByIdAsync(id))
@@ -38,7 +41,7 @@ public class BillingService : IBillingService
     {
         return (await _toPayRepository.GetAllAsync()).Adapt<IEnumerable<BillToPayDto>>();
     }
-    
+
     public async Task<IEnumerable<BillToReceiveDto>> GetAllBillToReceiveAsync()
     {
         return (await _toReceiveRepository.GetAllAsync()).Adapt<IEnumerable<BillToReceiveDto>>();
@@ -46,13 +49,13 @@ public class BillingService : IBillingService
 
     public async Task IncludeNewBillToPayAsync(BillToPayInsertDto bill)
     {
-        BillToPay billToPay = bill.Adapt<BillToPay>();
+        var billToPay = bill.Adapt<BillToPay>();
         if (billToPay.SupplierId > 0)
             billToPay.Supplier = null;
         _toPayRepository.Insert(billToPay);
         await _toPayRepository.SaveAsync();
     }
-    
+
     public async Task<BillToReceiveDto?> GetBillingToReceiveById(int id)
     {
         return (await _toReceiveRepository.GetByIdAsync(id))
@@ -61,7 +64,7 @@ public class BillingService : IBillingService
 
     public async Task IncludeNewBillToReceiveAsync(BillToReceiveInsertDto bill)
     {
-        BillToReceive billToReceive = bill.Adapt<BillToReceive>();
+        var billToReceive = bill.Adapt<BillToReceive>();
         if (billToReceive.CustomerId > 0)
             billToReceive.Customer = null;
         _toReceiveRepository.Insert(billToReceive);
@@ -74,7 +77,7 @@ public class BillingService : IBillingService
         billToPay?.WriteOff();
         await _toPayRepository.SaveAsync();
     }
-    
+
     public async Task WriteOffBillToReceiveAsync(BillToReceiveDto bill)
     {
         var billToReceive = await _toReceiveRepository.GetByIdAsync(bill.Id);
@@ -84,18 +87,17 @@ public class BillingService : IBillingService
 
     public async Task DeleteBillToPayAsync(int id)
     {
-        var billToPay = await _toPayRepository.GetByIdAsync(id) 
-            ?? throw new CashFlowNotFoundException("Bill record not found.");
+        var billToPay = await _toPayRepository.GetByIdAsync(id)
+                        ?? throw new CashFlowNotFoundException("Bill record not found.");
         _toPayRepository.Delete(billToPay);
         await _toPayRepository.SaveAsync();
     }
-    
+
     public async Task DeleteBillToReceiveAsync(int id)
     {
-        var billToReceive = await _toReceiveRepository.GetByIdAsync(id) 
-                        ?? throw new CashFlowNotFoundException("Bill record not found.");
+        var billToReceive = await _toReceiveRepository.GetByIdAsync(id)
+                            ?? throw new CashFlowNotFoundException("Bill record not found.");
         _toReceiveRepository.Delete(billToReceive);
         await _toReceiveRepository.SaveAsync();
     }
 }
-

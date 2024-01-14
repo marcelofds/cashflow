@@ -8,10 +8,6 @@ namespace CashFlowApp.Tests.UnitTests.Controllers;
 [TestFixture]
 public class CashFlowControllerTest
 {
-
-    private Mock<ICashFlowService> _service;
-    private CashFlowController _controller;
-
     [SetUp]
     public void Setup()
     {
@@ -19,6 +15,9 @@ public class CashFlowControllerTest
 
         _controller = new CashFlowController(_service.Object);
     }
+
+    private Mock<ICashFlowService> _service;
+    private CashFlowController _controller;
 
     [Test]
     public async Task ConsolidateAsync_WithValidParams_ReturnsCashFlowSummarizingBills()

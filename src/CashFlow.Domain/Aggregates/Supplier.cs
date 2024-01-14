@@ -6,8 +6,8 @@ public class Supplier : Entity
 {
     public Supplier()
     {
-        
     }
+
     public Supplier(string name)
     {
         Name = name;

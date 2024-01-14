@@ -1,4 +1,3 @@
-
 using CashFlow.Application.DataTransferObjects;
 using CashFlow.Domain.Aggregates;
 using CashFlow.Domain.Aggregates.Repositories;
@@ -16,6 +15,7 @@ public class CashFlowService : ICashFlowService
         _toPayRepository = toPayRepository;
         _toReceiveRepository = toReceiveRepository;
     }
+
     public async Task<CashFlowAggDto> ConsolidateAsync(DateOnly date)
     {
         var toPay = await _toPayRepository.GetAllByExpressionAsync(p => p.ExpirationDate == date);
@@ -24,7 +24,7 @@ public class CashFlowService : ICashFlowService
         cashFlow.Consolidade();
         return new CashFlowAggDto
         {
-            Date = cashFlow.Date, 
+            Date = cashFlow.Date,
             BillsToPay = cashFlow.BillsToPay.Adapt<List<BillToPayDto>>(),
             BillsToReceive = cashFlow.BillsToReceive.Adapt<List<BillToReceiveDto>>(),
             Value = cashFlow.Value

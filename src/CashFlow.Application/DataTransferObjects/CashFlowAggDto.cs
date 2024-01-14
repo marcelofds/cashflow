@@ -1,6 +1,3 @@
-
-using CashFlow.Domain.Aggregates;
-
 namespace CashFlow.Application.DataTransferObjects;
 
 public class CashFlowAggDto

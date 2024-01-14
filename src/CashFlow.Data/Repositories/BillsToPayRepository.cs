@@ -1,7 +1,6 @@
 using CashFlow.Data.Context;
 using CashFlow.Domain.Aggregates;
 using CashFlow.Domain.Aggregates.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace CashFlow.Data.Repositories;
 

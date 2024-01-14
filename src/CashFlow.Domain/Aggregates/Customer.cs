@@ -6,8 +6,8 @@ public class Customer : Entity
 {
     public Customer()
     {
-        
     }
+
     public Customer(string name)
     {
         Name = name;

@@ -17,10 +17,7 @@ public class UserService : IUserService
     public User Get(UserDto user)
     {
         var logedUser = _repository.Get(user.UserName, user.Password);
-        if (logedUser == null)
-        {
-            throw new CashFlowNotFoundException("User not found, user ou password mismatch");
-        }
+        if (logedUser == null) throw new CashFlowNotFoundException("User not found, user ou password mismatch");
 
         return logedUser;
     }
