@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace CashFlow.IoC.Extensions;
 
@@ -111,8 +112,21 @@ public static class ServiceCollectionExtension
 
     private static void ConfigureContext(IConfiguration configuration)
     {
+        
+        Log.Logger = new LoggerConfiguration()
+            //.ReadFrom.Configuration(configuration)
+            // set default minimum level
+            .MinimumLevel.Debug()
+            .CreateLogger();
+        
         var migrationsAssembly = typeof(CashFlowContext).GetTypeInfo().Assembly.GetName().Name;
-        var connectionString = configuration["ConnectionStr"];
+        var dbHost     = Environment.GetEnvironmentVariable("DB_HOST");
+        var dbName     = Environment.GetEnvironmentVariable("DB_NAME");
+        var dbUser     = Environment.GetEnvironmentVariable("DB_USER");
+        var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+        string connectionString = $"Host={dbHost};Database={dbName};User Id={dbUser};Password={dbPassword};";
+        Log.Debug($"The connections string: {connectionString}");
         //Connection injected to be used into the repositories.
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         _services.AddEntityFrameworkNpgsql()

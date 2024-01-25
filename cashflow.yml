@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  creationTimestamp: null
+  labels:
+    app: cashflow
+  name: cashflow
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: cashflow
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels: 
+        app: cashflow
+    spec:
+      containers:
+        - name: cashflow
+          image: marcelofds/cashflow:latest
+          ports:
+            - containerPort: 5136
+          env:
+            - name: DB_HOST
+              value: 10.52.0.3
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: gke-cloud-sql-secrets
+                  key: database
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: gke-cloud-sql-secrets
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gke-cloud-sql-secrets
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cashflow-service
+  labels:
+    app: cashflow
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 5136
+  selector: 
+    app: cashflow
+  type: LoadBalancer 
+  
